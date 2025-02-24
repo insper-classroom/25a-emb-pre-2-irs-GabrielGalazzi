@@ -34,7 +34,7 @@
 
   void btn_callback(uint gpio, uint32_t events) {
 
-    if (time_us_64() - lastPressTime > 50000) { //rise edge
+    if (time_us_64() - lastPressTime > 50000 && events == 0x4) { 
       lastPressTime = time_us_64();
       ledFlag = !ledFlag;
     }
@@ -50,17 +50,14 @@
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
-    gpio_set_irq_enabled_with_callback(BTN_PIN_R, GPIO_IRQ_EDGE_RISE, true, &btn_callback);
+    gpio_set_irq_enabled_with_callback(BTN_PIN_R, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &btn_callback);
 
 
     while (true) {
-      printf("%i\n", lastPressTime);
       if(ledFlag == 1) {
-        printf("LIGUEI MAIN\n");
         gpio_put(LED_PIN, 1);
       }
       else if (ledFlag == 0){
-        printf("DESLIGUEI MAIN\n");
         gpio_put(LED_PIN, 0);
       }
     }

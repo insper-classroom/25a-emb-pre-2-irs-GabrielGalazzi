@@ -5,21 +5,15 @@
 const int BTN_PIN_R = 28;
 const int BTN_PIN_G = 26;
 
-volatile int redFlag = 0;
-volatile int greenFlag = 0;
 volatile int redFallFlag = 0;
 volatile int greenFallFlag = 0;
 
 void btn_callback(uint gpio, uint32_t events) {
   if (events == 0x4) { // fall edge
-    if (gpio == BTN_PIN_R){
+    if (gpio == BTN_PIN_R)
       redFallFlag = 1;
-      redFlag = !redFlag;
-    }
-    else if (gpio == BTN_PIN_G){
+    else if (gpio == BTN_PIN_G)
       greenFallFlag = 1;
-      greenFlag = !greenFlag;
-    }
   }
 }
 
@@ -44,13 +38,14 @@ int main() {
 
   while (true) {
 
-    if (redFlag == 1 && redFallFlag == 1){
+    if (redFallFlag == 1) {
       printf("fall red\n");
-      redFallFlag = 0;
+      redFallFlag = 0; 
     }
-    if (greenFlag == 1 && greenFallFlag == 1){
+
+    if (greenFallFlag == 1) {
       printf("fall green\n");
-      greenFallFlag = 0;
+      greenFallFlag = 0; 
     }
 
   }
